@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "DevOps Project 2: Docker  App Running  via Jenkins CI/CD!"
+    return "CI AUTO TRIGGER WORKING 🚀!"
 
 if __name__ == "__main__":
 
