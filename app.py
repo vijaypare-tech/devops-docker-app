@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "CI AUTO TRIGGER WORKING 🚀!"
+    return "CI AUTO TRIGGER WORKING 🚀!_2"
 
 if __name__ == "__main__":
 
