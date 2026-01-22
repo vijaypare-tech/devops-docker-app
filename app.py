@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return "CI AUTO TRIGGER WORKING 🚀!_2"
+    return "🔥 Auto CI Trigger Working via GitHub Webhook!"
 
 if __name__ == "__main__":
 
