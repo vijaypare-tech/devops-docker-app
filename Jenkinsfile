@@ -2,11 +2,18 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "flask-ci-app"
-        CONTAINER_NAME = "flask-ci-container"
+        IMAGE_NAME = "vijaypare/flask-ci-app"
+        DOCKER_CREDS = credentials('dockerhub-creds')
     }
 
     stages {
+
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/vijaypare-tech/devops-docker-app.git'
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -14,12 +21,26 @@ pipeline {
             }
         }
 
+        stage('Login to Docker Hub') {
+            steps {
+                sh '''
+                echo "$DOCKER_CREDS_PSW" | docker login -u "$DOCKER_CREDS_USR" --password-stdin
+                '''
+            }
+        }
+
+        stage('Push Image to Docker Hub') {
+            steps {
+                sh 'docker push $IMAGE_NAME:latest'
+            }
+        }
+
         stage('Deploy Container') {
             steps {
                 sh '''
-                docker stop $CONTAINER_NAME || true
-                docker rm $CONTAINER_NAME || true
-                docker run -d -p 5000:5000 --name $CONTAINER_NAME $IMAGE_NAME:latest
+                docker stop flask-ci-container || true
+                docker rm flask-ci-container || true
+                docker run -d -p 5000:5000 --name flask-ci-container $IMAGE_NAME:latest
                 '''
             }
         }
