@@ -28,7 +28,7 @@ pipeline {
                   --severity HIGH,CRITICAL \
                   --ignore-unfixed \
                   --no-progress \
-		  --exit-code 0 \					
+		  --exit-code 0					
                   $IMAGE_NAME:latest
                 '''
             }
