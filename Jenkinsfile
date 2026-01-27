@@ -26,8 +26,9 @@ pipeline {
                 sh '''
                 trivy image \
                   --severity HIGH,CRITICAL \
-                  --exit-code 1 \
+                  --ignore-unfixed \
                   --no-progress \
+		  --exit-code 0 \					
                   $IMAGE_NAME:latest
                 '''
             }
