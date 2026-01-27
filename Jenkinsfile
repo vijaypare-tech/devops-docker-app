@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "vijaypare/flask-ci-app"
+        IMAGE_NAME   = "vijaypare/flask-ci-app"
         DOCKER_CREDS = credentials('dockerhub-creds')
     }
 
@@ -24,12 +24,11 @@ pipeline {
         stage('Trivy Image Scan') {
             steps {
                 sh '''
-                trivy image \
-                  --severity HIGH,CRITICAL \
-                  --ignore-unfixed \
-                  --no-progress \
-		  --exit-code 0					
-                  $IMAGE_NAME:latest
+                trivy image --severity HIGH,CRITICAL \
+                            --ignore-unfixed \
+                            --no-progress \
+                            --exit-code 0 \
+                            $IMAGE_NAME:latest
                 '''
             }
         }
@@ -37,7 +36,8 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 sh '''
-                echo "$DOCKER_CREDS_PSW" | docker login -u "$DOCKER_CREDS_USR" --password-stdin
+                echo "$DOCKER_CREDS_PSW" | docker login \
+                  -u "$DOCKER_CREDS_USR" --password-stdin
                 '''
             }
         }
@@ -53,7 +53,9 @@ pipeline {
                 sh '''
                 docker stop flask-ci-container || true
                 docker rm flask-ci-container || true
-                docker run -d -p 5000:5000 --name flask-ci-container $IMAGE_NAME:latest
+                docker run -d -p 5000:5000 \
+                  --name flask-ci-container \
+                  $IMAGE_NAME:latest
                 '''
             }
         }
